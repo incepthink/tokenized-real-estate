@@ -9,9 +9,14 @@ export interface Property {
   marketCap: number;
   fundedPercent: number;
   image: string;
+  pinned?: boolean;
+  /** Deployed PropertyToken contract address — enables live on-chain data */
+  contractAddress?: string;
 }
 
 export const PROPERTIES: Property[] = [
+  { id:"alpha", name:"Property Alpha", city:"Mumbai", type:"Residential", status:"Active", tokenSymbol:"PRPA", tokenPrice:45.00, marketCap:3200000, fundedPercent:87, image:"https://images.unsplash.com/photo-1660145416818-b9a2b1a1f193?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", pinned:true, contractAddress:"0xD9AF49Fa0494a43Fd7FF9d7f37f02edFbf634Ae7" },
+  { id:"beta",  name:"Property Beta",  city:"Mumbai", type:"Residential", status:"Active", tokenSymbol:"PRPB", tokenPrice:45.00, marketCap:3200000, fundedPercent:87, image:"https://images.unsplash.com/photo-1660145416818-b9a2b1a1f193?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", pinned:true, contractAddress:"0x5D2feF52a1fCabe0F23ce2CE0512028Ab566Cd91" },
   { id:"meridian", name:"The Meridian Residences", city:"New York", type:"Residential", status:"Active", tokenSymbol:"MRDX", tokenPrice:45.00, marketCap:3200000, fundedPercent:87, image:"https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800" },
   { id:"harbor", name:"Harbor View Commercial Tower", city:"Miami", type:"Commercial", status:"Active", tokenSymbol:"HVCX", tokenPrice:12.50, marketCap:8100000, fundedPercent:34, image:"https://images.unsplash.com/photo-1486325212027-8081e485255e?w=800" },
   { id:"sunset", name:"Sunset Industrial Park", city:"Los Angeles", type:"Industrial", status:"Coming Soon", tokenSymbol:"SNSX", tokenPrice:8.00, marketCap:1500000, fundedPercent:0, image:"https://images.unsplash.com/photo-1565008576549-57569a49371d?w=800" },

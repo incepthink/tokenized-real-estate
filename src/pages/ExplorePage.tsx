@@ -70,7 +70,10 @@ export default function ExplorePage() {
   };
 
   const filtered = useMemo(() => {
+    const pinned = PROPERTIES.filter((p) => p.pinned);
+
     let result = PROPERTIES.filter((p) => {
+      if (p.pinned) return false;
       if (
         search &&
         !p.name.toLowerCase().includes(search.toLowerCase()) &&
@@ -97,7 +100,7 @@ export default function ExplorePage() {
       result.sort((a, b) => b.fundedPercent - a.fundedPercent);
     else if (sort === "mcap") result.sort((a, b) => b.marketCap - a.marketCap);
 
-    return result;
+    return [...pinned, ...result];
   }, [search, status, type, city, priceRange, mcapRange, fundedRange, sort]);
 
   return (

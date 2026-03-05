@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { MapPin } from 'lucide-react';
 import type { Property } from '@/lib/dummyData';
+import { usePropertyOnChainData } from '@/hooks/usePropertyOnChainData';
 
 const statusColors: Record<string, string> = {
   Active: 'bg-success',
@@ -11,6 +12,17 @@ const statusColors: Record<string, string> = {
 export default function PropertyCard({ property }: { property: Property }) {
   const navigate = useNavigate();
   const go = () => navigate(`/property/${property.id}`);
+
+  const { tokenPrice, marketCap, fundedPercent, isLoading } = usePropertyOnChainData(
+    property.contractAddress,
+    {
+      tokenPrice: property.tokenPrice,
+      marketCap: property.marketCap,
+      fundedPercent: property.fundedPercent,
+    }
+  );
+
+  const skeleton = "animate-pulse bg-muted rounded w-16 h-4 inline-block";
 
   return (
     <div
@@ -42,23 +54,37 @@ export default function PropertyCard({ property }: { property: Property }) {
         <div className="grid grid-cols-2 gap-4 mt-4">
           <div>
             <p className="text-[11px] text-muted-foreground font-body uppercase tracking-wide">Token Price</p>
-            <p className="font-heading text-base font-bold">${property.tokenPrice.toFixed(2)}</p>
+            {isLoading ? (
+              <span className={skeleton} />
+            ) : (
+              <p className="font-heading text-base font-bold">${tokenPrice.toFixed(2)}</p>
+            )}
           </div>
           <div>
             <p className="text-[11px] text-muted-foreground font-body uppercase tracking-wide">Market Cap</p>
-            <p className="font-heading text-base font-bold">${(property.marketCap / 1e6).toFixed(1)}M</p>
+            {isLoading ? (
+              <span className={skeleton} />
+            ) : (
+              <p className="font-heading text-base font-bold">${(marketCap / 1e6).toFixed(1)}M</p>
+            )}
           </div>
         </div>
 
         <div className="mt-4">
           <div className="flex justify-between items-center mb-1.5">
-            <span className="text-xs text-muted-foreground font-body">{property.fundedPercent}% Funded</span>
-            <span className="text-xs font-bold text-accent font-body">{property.fundedPercent}%</span>
+            {isLoading ? (
+              <span className={skeleton} />
+            ) : (
+              <>
+                <span className="text-xs text-muted-foreground font-body">{fundedPercent}% Funded</span>
+                <span className="text-xs font-bold text-accent font-body">{fundedPercent}%</span>
+              </>
+            )}
           </div>
           <div className="w-full h-1.5 bg-secondary rounded-full overflow-hidden">
             <div
               className="h-full bg-primary rounded-full transition-all duration-300"
-              style={{ width: `${property.fundedPercent}%` }}
+              style={{ width: `${fundedPercent}%` }}
             />
           </div>
         </div>
