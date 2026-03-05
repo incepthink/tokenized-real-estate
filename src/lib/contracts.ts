@@ -1,6 +1,8 @@
 import PROPERTY_TOKEN_ABI from "@/abi/PropertyToken.json";
 import PROPERTY_SWAP_ABI from "@/abi/PropertySwap.json";
 
+export { PROPERTY_TOKEN_ABI, PROPERTY_SWAP_ABI };
+
 // ─── Contract Addresses (Sepolia) ───────────────────────────────────────────
 
 export const PROPERTY_SWAP_ADDRESS =
@@ -16,6 +18,3 @@ export const PROPERTY_TOKEN_ADDRESSES = {
 /** ETH/USD rate used to convert on-chain wei prices to USD. Update as needed. */
 export const ETH_USD_PRICE = 2500;
 
-// ─── ABIs ────────────────────────────────────────────────────────────────────
-
-export { PROPERTY_TOKEN_ABI, PROPERTY_SWAP_ABI };

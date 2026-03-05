@@ -69,9 +69,10 @@ function OnChainSwapPanel({ property, onSwapExecuted }: Props) {
         if (tokensOut === 0n) { toast.error('Amount too small'); return; }
         const ethValue = tokensOut * priceInWei;
 
+        // @ts-expect-error wagmi overload resolution requires as-const ABI; runtime is correct
         const hash = await writeContractAsync({
           address: PROPERTY_SWAP_ADDRESS,
-          abi: PROPERTY_SWAP_ABI as never,
+          abi: PROPERTY_SWAP_ABI,
           functionName: 'buy',
           args: [tokenAddr, tokensOut],
           value: ethValue,
@@ -105,18 +106,20 @@ function OnChainSwapPanel({ property, onSwapExecuted }: Props) {
         const tokenAmountWei = tokenAmountWhole * 10n ** 18n;
 
         setSellStep('approving');
+        // @ts-expect-error wagmi overload resolution requires as-const ABI; runtime is correct
         const approveHash = await writeContractAsync({
           address: tokenAddr,
-          abi: PROPERTY_TOKEN_ABI as never,
+          abi: PROPERTY_TOKEN_ABI,
           functionName: 'approve',
           args: [PROPERTY_SWAP_ADDRESS, tokenAmountWei],
         });
         await waitForTransactionReceipt(config, { hash: approveHash });
 
         setSellStep('selling');
+        // @ts-expect-error wagmi overload resolution requires as-const ABI; runtime is correct
         const sellHash = await writeContractAsync({
           address: PROPERTY_SWAP_ADDRESS,
-          abi: PROPERTY_SWAP_ABI as never,
+          abi: PROPERTY_SWAP_ABI,
           functionName: 'sell',
           args: [tokenAddr, tokenAmountWhole],
         });
