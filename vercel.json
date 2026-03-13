@@ -1,3 +1,7 @@
 {
-  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+  "rewrites": [
+    { "source": "/examples/tokenized-real-estate/assets/:path*", "destination": "/assets/:path*" },
+    { "source": "/examples/tokenized-real-estate/:path*", "destination": "/index.html" },
+    { "source": "/examples/tokenized-real-estate", "destination": "/index.html" }
+  ]
 }

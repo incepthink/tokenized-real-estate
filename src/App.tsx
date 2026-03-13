@@ -21,7 +21,7 @@ const App = () => (
       <RainbowKitProvider>
         <TooltipProvider>
           <Toaster richColors position="top-right" />
-          <BrowserRouter>
+          <BrowserRouter basename="/examples/tokenized-real-estate">
             <Navbar />
             <main className="min-h-screen">
               <Routes>
