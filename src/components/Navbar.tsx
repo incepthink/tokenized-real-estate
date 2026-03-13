@@ -45,7 +45,7 @@ export default function Navbar() {
       </div>
 
       <div className="ml-auto">
-        <ConnectButton chainStatus="none" showBalance={false} />
+        <ConnectButton chainStatus="icon" showBalance={false} />
       </div>
     </nav>
   );
