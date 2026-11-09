@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useAccount } from 'wagmi';
-import { USER_HOLDINGS, PORTFOLIO_SUMMARY, HOLDING_COLORS, PROPERTIES } from '@/lib/dummyData';
+import { USER_HOLDINGS, HOLDING_COLORS, PROPERTIES } from '@/lib/dummyData';
 import { useSwapData } from '@/hooks/useSwapData';
 import { PROPERTY_TOKEN_ADDRESSES, ETH_USD_PRICE } from '@/lib/contracts';
 
@@ -48,8 +48,17 @@ export default function HoldingsTable() {
       return { prop, balance, currentPrice, entryPrice };
     });
 
-  const onChainTotalValue = onChainRows.reduce((s, r) => s + r.balance * r.currentPrice, 0);
-  const totalValue = PORTFOLIO_SUMMARY.totalValue + onChainTotalValue;
+  // Summary is derived from the rows shown, so totals, P&L, ROI and share % agree
+  const allRows = [
+    ...onChainRows.map((r) => ({ balance: r.balance, entryPrice: r.entryPrice, currentPrice: r.currentPrice })),
+    ...USER_HOLDINGS.map((h) => ({ balance: h.balance, entryPrice: h.entryPrice, currentPrice: h.currentPrice })),
+  ];
+  const totalValue = allRows.reduce((s, r) => s + r.balance * r.currentPrice, 0);
+  const totalCost = allRows.reduce((s, r) => s + r.balance * r.entryPrice, 0);
+  const totalPnl = totalValue - totalCost;
+  const totalRoi = totalCost > 0 ? (totalPnl / totalCost) * 100 : 0;
+  const pnlClass = totalPnl >= 0 ? 'text-success' : 'text-danger';
+  const pnlSign = totalPnl >= 0 ? '+' : '';
 
   return (
     <div className="mt-8 bg-card rounded-xl p-6 shadow-card">
@@ -58,9 +67,9 @@ export default function HoldingsTable() {
         <div className="flex items-center gap-4 text-sm font-body">
           <span>Total Value <strong>${totalValue.toFixed(2)}</strong></span>
           <span className="text-card-border">|</span>
-          <span>P&L <strong className="text-danger">${PORTFOLIO_SUMMARY.pnl.toFixed(2)}</strong></span>
+          <span>P&L <strong className={pnlClass}>{pnlSign}${totalPnl.toFixed(2)}</strong></span>
           <span className="text-card-border">|</span>
-          <span>ROI <strong className="text-danger">{PORTFOLIO_SUMMARY.roi.toFixed(2)}%</strong></span>
+          <span>ROI <strong className={pnlClass}>{pnlSign}{totalRoi.toFixed(2)}%</strong></span>
         </div>
       </div>
 

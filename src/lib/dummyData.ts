@@ -522,11 +522,15 @@ export const TRANSACTION_HISTORY: Transaction[] = [
   },
 ];
 
+// Derived from USER_HOLDINGS so the portfolio header, allocation % and rows agree
+const holdingsValue = USER_HOLDINGS.reduce((s, h) => s + h.balance * h.currentPrice, 0);
+const holdingsCost = USER_HOLDINGS.reduce((s, h) => s + h.balance * h.entryPrice, 0);
+
 export const PORTFOLIO_SUMMARY = {
-  totalValue: 791.81,
-  pnl: -66.14,
-  roi: -7.71,
-  depositedTotal: 858.0,
+  totalValue: holdingsValue,
+  pnl: holdingsValue - holdingsCost,
+  roi: holdingsCost > 0 ? ((holdingsValue - holdingsCost) / holdingsCost) * 100 : 0,
+  depositedTotal: holdingsCost,
 };
 
 export const HOLDING_COLORS = ["#3B82F6", "#10B981", "#F59E0B", "#8B5CF6"];
