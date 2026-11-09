@@ -70,7 +70,18 @@ export default function ExplorePage() {
   };
 
   const filtered = useMemo(() => {
-    const pinned = PROPERTIES.filter((p) => p.pinned);
+    // Pinned (live on-chain) properties stay on top and ignore the range
+    // sliders, but still follow search and the status/type/city filters
+    const pinned = PROPERTIES.filter(
+      (p) =>
+        p.pinned &&
+        (!search ||
+          p.name.toLowerCase().includes(search.toLowerCase()) ||
+          p.city.toLowerCase().includes(search.toLowerCase())) &&
+        (status === "All" || p.status === status) &&
+        (type === "All Types" || p.type === type) &&
+        (city === "All Cities" || p.city === city),
+    );
 
     let result = PROPERTIES.filter((p) => {
       if (p.pinned) return false;
